@@ -5,6 +5,7 @@ import { CanvasPanel } from "@/components/chat/CanvasPanel";
 import { ChatComposer } from "@/components/chat/ChatComposer";
 import { ChatMessages, type ChatMessage } from "@/components/chat/ChatMessages";
 import { Button } from "@/components/ui/button";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { randomReply, SUGGESTED_PROMPTS } from "@/lib/sample-content";
 
