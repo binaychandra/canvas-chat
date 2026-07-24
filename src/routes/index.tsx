@@ -192,7 +192,7 @@ function ActiveState({
 
       {/* Desktop: resizable split */}
       <div className="hidden min-h-0 flex-1 md:block">
-        <ResizablePanelGroup direction="horizontal" className="gap-1">
+        <ResizablePanelGroup orientation="horizontal" className="gap-1">
           <ResizablePanel defaultSize={45} minSize={28} maxSize={70}>
             {chatPane}
           </ResizablePanel>
