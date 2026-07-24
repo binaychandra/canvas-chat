@@ -172,13 +172,13 @@ function ActiveState({
       </header>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-4">
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto w-full max-w-4xl">
           <ChatMessages messages={messages} pending={pending} />
         </div>
       </div>
 
       <div className="border-t border-border/60 bg-background/60 px-4 py-3 backdrop-blur">
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto w-full max-w-4xl">
           <ChatComposer value={input} onChange={setInput} onSubmit={onSend} autoFocus />
         </div>
       </div>
@@ -192,15 +192,18 @@ function ActiveState({
 
       {/* Desktop: resizable split */}
       <div className="hidden min-h-0 flex-1 md:block">
-        <ResizablePanelGroup orientation="horizontal" className="gap-1">
-          <ResizablePanel defaultSize={45} minSize={28} maxSize={70}>
+        <ResizablePanelGroup
+          orientation="horizontal"
+          className="gap-2"
+          resizeTargetMinimumSize={{ fine: 16, coarse: 28 }}
+        >
+          <ResizablePanel defaultSize="38" minSize="38" maxSize="82">
             {chatPane}
           </ResizablePanel>
           <ResizableHandle
-            withHandle
-            className="mx-1 w-1.5 rounded-full bg-transparent transition-colors hover:bg-border data-[resize-handle-state=drag]:bg-primary/40"
+            className="w-px min-w-px bg-transparent p-0 px-0 transition-colors after:w-4 after:bg-transparent hover:bg-border/60 data-[resize-handle-state=drag]:bg-primary/40"
           />
-          <ResizablePanel defaultSize={55} minSize={30} className="animate-slide-in-right">
+          <ResizablePanel defaultSize="62" minSize="18" className="animate-slide-in-right">
             <CanvasPanel />
           </ResizablePanel>
         </ResizablePanelGroup>
@@ -208,4 +211,3 @@ function ActiveState({
     </div>
   );
 }
-
