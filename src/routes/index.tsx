@@ -145,50 +145,66 @@ function ActiveState({
   sheetOpen: boolean;
   setSheetOpen: (v: boolean) => void;
 }) {
-  return (
-    <div className="flex h-screen w-full flex-col md:grid md:grid-cols-[minmax(380px,1fr)_1.2fr] md:gap-4 md:p-4">
-      {/* Chat pane */}
-      <section className="flex min-h-0 flex-1 flex-col overflow-hidden md:rounded-2xl md:border md:border-border md:bg-card/40">
-        <header className="flex items-center justify-between gap-3 border-b border-border/60 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="grid h-7 w-7 place-items-center rounded-lg bg-primary/10 text-primary">
-              <Sparkles className="h-3.5 w-3.5" />
+  const chatPane = (
+    <section className="flex h-full min-h-0 flex-col overflow-hidden md:rounded-2xl md:border md:border-border md:bg-card/40">
+      <header className="flex items-center justify-between gap-3 border-b border-border/60 px-4 py-3">
+        <div className="flex items-center gap-2">
+          <div className="grid h-7 w-7 place-items-center rounded-lg bg-primary/10 text-primary">
+            <Sparkles className="h-3.5 w-3.5" />
+          </div>
+          <div className="text-sm font-medium">Nebula</div>
+        </div>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-1.5 md:hidden">
+              <PanelRightOpen className="h-3.5 w-3.5" />
+              Canvas
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-full p-0 sm:max-w-lg">
+            <SheetTitle className="sr-only">Canvas</SheetTitle>
+            <div className="h-full p-3">
+              <CanvasPanel />
             </div>
-            <div className="text-sm font-medium">Nebula</div>
-          </div>
-          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-1.5 md:hidden">
-                <PanelRightOpen className="h-3.5 w-3.5" />
-                Canvas
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-full p-0 sm:max-w-lg">
-              <SheetTitle className="sr-only">Canvas</SheetTitle>
-              <div className="h-full p-3">
-                <CanvasPanel />
-              </div>
-            </SheetContent>
-          </Sheet>
-        </header>
+          </SheetContent>
+        </Sheet>
+      </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-4">
-          <div className="mx-auto max-w-2xl">
-            <ChatMessages messages={messages} pending={pending} />
-          </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4">
+        <div className="mx-auto max-w-2xl">
+          <ChatMessages messages={messages} pending={pending} />
         </div>
+      </div>
 
-        <div className="border-t border-border/60 bg-background/60 px-4 py-3 backdrop-blur">
-          <div className="mx-auto max-w-2xl">
-            <ChatComposer value={input} onChange={setInput} onSubmit={onSend} autoFocus />
-          </div>
+      <div className="border-t border-border/60 bg-background/60 px-4 py-3 backdrop-blur">
+        <div className="mx-auto max-w-2xl">
+          <ChatComposer value={input} onChange={setInput} onSubmit={onSend} autoFocus />
         </div>
-      </section>
+      </div>
+    </section>
+  );
 
-      {/* Canvas pane (desktop) */}
-      <aside className="hidden min-h-0 animate-slide-in-right md:block">
-        <CanvasPanel />
-      </aside>
+  return (
+    <div className="flex h-screen w-full flex-col md:p-4">
+      {/* Mobile: chat only, canvas in Sheet */}
+      <div className="flex min-h-0 flex-1 flex-col md:hidden">{chatPane}</div>
+
+      {/* Desktop: resizable split */}
+      <div className="hidden min-h-0 flex-1 md:block">
+        <ResizablePanelGroup direction="horizontal" className="gap-1">
+          <ResizablePanel defaultSize={45} minSize={28} maxSize={70}>
+            {chatPane}
+          </ResizablePanel>
+          <ResizableHandle
+            withHandle
+            className="mx-1 w-1.5 rounded-full bg-transparent transition-colors hover:bg-border data-[resize-handle-state=drag]:bg-primary/40"
+          />
+          <ResizablePanel defaultSize={55} minSize={30} className="animate-slide-in-right">
+            <CanvasPanel />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
     </div>
   );
 }
+
