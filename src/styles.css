@@ -132,6 +132,22 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@utility shadow-elegant {
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 8px 24px -12px oklch(0 0 0 / 0.12);
+}
+
+@utility bg-hero {
+  background-image:
+    radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      color-mix(in oklab, var(--primary) 10%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--background), color-mix(in oklab, var(--muted) 50%, var(--background)));
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
