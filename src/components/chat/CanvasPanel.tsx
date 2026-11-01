@@ -1,16 +1,34 @@
 import { Check, Copy, FileText } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CANVAS_TABS } from "@/lib/sample-content";
 import { Markdown } from "./Markdown";
 
-export function CanvasPanel() {
-  const [active, setActive] = useState(CANVAS_TABS[0].id);
+export function CanvasPanel({ visibleTabs }: { visibleTabs?: string[] }) {
+  const tabs = visibleTabs
+    ? CANVAS_TABS.filter((t) => visibleTabs.includes(t.id))
+    : CANVAS_TABS;
+  const [active, setActive] = useState(tabs[0]?.id ?? CANVAS_TABS[0].id);
   const [copied, setCopied] = useState(false);
 
-  const current = CANVAS_TABS.find((t) => t.id === active) ?? CANVAS_TABS[0];
+  // Auto-switch to the most recently added tab
+  useEffect(() => {
+    if (tabs.length === 0) return;
+    if (!tabs.find((t) => t.id === active)) {
+      setActive(tabs[tabs.length - 1].id);
+    }
+  }, [tabs.map((t) => t.id).join("|")]);
+
+  // When a new tab appears, focus it
+  const lastId = tabs[tabs.length - 1]?.id;
+  useEffect(() => {
+    if (lastId) setActive(lastId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabs.length]);
+
+  const current = tabs.find((t) => t.id === active) ?? tabs[0];
 
   const copy = async () => {
     await navigator.clipboard.writeText(current.markdown);
@@ -42,7 +60,7 @@ export function CanvasPanel() {
 
         <div className="border-b border-border px-3 pt-2">
           <TabsList className="bg-transparent p-0">
-            {CANVAS_TABS.map((t) => (
+            {tabs.map((t) => (
               <TabsTrigger
                 key={t.id}
                 value={t.id}
@@ -55,7 +73,7 @@ export function CanvasPanel() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {CANVAS_TABS.map((t) => (
+          {tabs.map((t) => (
             <TabsContent key={t.id} value={t.id} className="mt-0 px-6 py-6">
               {t.id === active && <Markdown>{t.markdown}</Markdown>}
             </TabsContent>

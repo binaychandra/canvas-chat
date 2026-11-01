@@ -148,6 +148,33 @@
     linear-gradient(180deg, var(--background), color-mix(in oklab, var(--muted) 50%, var(--background)));
 }
 
+@keyframes todo-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@utility todo-glow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+@utility todo-glow-bar {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--primary) 0%, transparent) 20%,
+    color-mix(in oklab, var(--primary) 35%, transparent) 50%,
+    color-mix(in oklab, var(--primary) 0%, transparent) 80%,
+    transparent 100%
+  );
+  animation: todo-sweep 1.4s ease-in-out infinite;
+  z-index: 0;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

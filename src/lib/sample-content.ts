@@ -16,6 +16,60 @@ export function randomReply(): string {
   return REPLIES[Math.floor(Math.random() * REPLIES.length)];
 }
 
+export interface TodoTemplate {
+  id: string;
+  title: string;
+  logs: string[];
+}
+
+export const TODO_TEMPLATE: TodoTemplate[] = [
+  {
+    id: "analyze",
+    title: "Analyze the request",
+    logs: [
+      "Parsing user intent…",
+      "Extracting key entities and constraints",
+      "Selected reasoning strategy: structured outline",
+    ],
+  },
+  {
+    id: "research",
+    title: "Gather context",
+    logs: [
+      "Searching internal knowledge…",
+      "Found 12 relevant references",
+      "Ranking by recency and relevance",
+    ],
+  },
+  {
+    id: "draft",
+    title: "Draft the document",
+    logs: [
+      "Composing overview section…",
+      "Adding feature breakdown",
+      "Inserting a code sample",
+    ],
+  },
+  {
+    id: "polish",
+    title: "Polish and format",
+    logs: [
+      "Normalizing headings",
+      "Running markdown linter",
+      "Generating table of contents",
+    ],
+  },
+  {
+    id: "publish",
+    title: "Render to canvas",
+    logs: [
+      "Serializing tabs…",
+      "Mounting canvas panel",
+      "Ready ✨",
+    ],
+  },
+];
+
 export const CANVAS_TABS: { id: string; label: string; markdown: string }[] = [
   {
     id: "overview",

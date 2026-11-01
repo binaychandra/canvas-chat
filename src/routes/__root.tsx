@@ -11,6 +11,9 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { AppSidebar } from "../components/layout/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
+
 
 function NotFoundComponent() {
   return (
@@ -119,8 +122,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SidebarProvider>
+        <div className="flex h-screen w-full overflow-hidden">
+          <AppSidebar />
+          <main className="relative min-w-0 flex-1 overflow-hidden">
+            <SidebarTrigger className="absolute left-3 top-3 z-30 md:hidden" />
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </main>
+        </div>
+      </SidebarProvider>
     </QueryClientProvider>
   );
 }
+
